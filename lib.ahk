@@ -30,13 +30,28 @@ getTrimmedExplorerWindowTitle() {
     }
 }
 
+getCurrentPath() {
+    try {
+        for window in ComObject("Shell.Application").Windows {
+            if (window.HWND == WinGetID("A")) {
+                return window.Document.Folder.Self.Path
+            }
+        }
+    }
+    return ""
+}
+
+; HAUPT-FUNKTION: CMD im aktuellen Explorer-Pfad
 openTerminalInCurrentExplorerDirectory() {
     if (isExplorerActive()) {
-        windowTitle := getTrimmedExplorerWindowTitle()
-        Run("wt --startingDirectory `"" windowTitle "`"")
-    } else {
-        Run("wt")
+        path := getCurrentPath()
+        if (path != "" && DirExist(path)) {
+            Run("cmd /k cd /d `"" . path . "`"")
+            return
+        }
     }
+    ; Fallback: Standard-CMD
+    Run("cmd")
 }
 
 openVSCodeInCurrentExplorerDirectory() {
@@ -75,13 +90,27 @@ callVSCode() {
         WinActivate("ahk_exe Code.exe")
 }
 
-callChrome() {
-    if !WinExist("ahk_exe chrome.exe")
-        Run("chrome.exe")
-    if WinActive("ahk_exe chrome.exe")
-        Send("^{tab}")
-    else
-        WinActivate("ahk_exe chrome.exe")
+callVivaldi() {
+    try {
+        ; Prüfe ob Vivaldi läuft
+        if (!ProcessExist("vivaldi.exe")) {
+            Run("vivaldi.exe")
+            WinWait("ahk_exe vivaldi.exe", , 10)
+            return
+        }
+        
+        if (WinExist("ahk_exe vivaldi.exe")) {
+            if (WinActive("ahk_exe vivaldi.exe")) {
+                ; Bereits aktiv -> neuer Tab
+                Send("^t")
+            } else {
+                ; Nicht aktiv -> aktivieren
+                WinActivate("ahk_exe vivaldi.exe")
+            }
+        }
+    } catch {
+        Run("vivaldi.exe")
+    }
 }
 
 ; switchActiveStreamDeckConfig() {

@@ -42,7 +42,7 @@ SC00D:: Send("{Raw}" "`` ")
     G:: Send("^!j")
 
     X:: callExplorer()
-    W:: callChrome()
+    W:: callVivaldi()
     C:: openTerminalInCurrentExplorerDirectory()
     V::
     {

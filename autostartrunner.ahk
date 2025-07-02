@@ -3,8 +3,8 @@
 
 SendMode("Input")
 
-SetWorkingDir(varHotkeylessAHKPath())
-Run(varHotkeylessAHKPath() . "HotkeylessAHK.ahk")
+; SetWorkingDir(varHotkeylessAHKPath())
+; Run(varHotkeylessAHKPath() . "HotkeylessAHK.ahk")
 
 SetWorkingDir(varAutoHotkeyScriptsPath())
 Run(varAutoHotkeyScriptsPath() . "ahk.ahk")
