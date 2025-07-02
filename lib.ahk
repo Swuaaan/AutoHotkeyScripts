@@ -5,13 +5,13 @@ isExplorerActive() {
     return !!WinActive("ahk_class CabinetWClass")
 }
 
-isPremiereActive() {
-    return !!WinActive("ahk_exe Adobe Premiere Pro.exe")
-}
+; isPremiereActive() {
+;     return !!WinActive("ahk_exe Adobe Premiere Pro.exe")
+; }
 
-isMinecraftActive() {
-    return !!WinActive("Minecraft* 1.") || !!WinActive("Minecraft 1.") || !!WinActive("FTB")
-}
+; isMinecraftActive() {
+;     return !!WinActive("Minecraft* 1.") || !!WinActive("Minecraft 1.") || !!WinActive("FTB")
+; }
 
 getTrimmedExplorerWindowTitle() {
     if (isExplorerActive()) {
@@ -84,50 +84,33 @@ callChrome() {
         WinActivate("ahk_exe chrome.exe")
 }
 
-premiereClickOnElementPositionProperty() {
-    coordX := 85
-    coordY := 135
+; switchActiveStreamDeckConfig() {
+;     if (!WinActive("ahk_exe StreamDeck.exe")) {
+;         return
+;     }
 
-    ; Handle MOGRTs that add another first property field
-    if (PixelGetColor(46, 133) = "0x616161") {
-        coordX := 91
-        coordY := 154
-    }
+;     ; Color of the "XL" in the Stream Deck name
+;     coordX := 179
+;     coordY := 43
+;     color := PixelGetColor(coordX, coordY)
 
-    BlockInput("MouseMove")
-    MouseGetPos(&mouseX, &mouseY)
-    MouseClick("left", coordX, coordY, , 0)
-    MouseMove(mouseX, mouseY, 0)
-    BlockInput("MouseMoveOff")
-}
+;     BlockInput("MouseMove")
+;     MouseGetPos(&mouseX, &mouseY)
 
-switchActiveStreamDeckConfig() {
-    if (!WinActive("ahk_exe StreamDeck.exe")) {
-        return
-    }
+;     MouseClick("left", coordX, coordY, , 0)
+;     Sleep(100)
 
-    ; Color of the "XL" in the Stream Deck name
-    coordX := 179
-    coordY := 43
-    color := PixelGetColor(coordX, coordY)
+;     if (color = "0xE6E6E6") {
+;         ; Switch from XL to +
+;         MouseClick("left", coordX, coordY + 40, , 0)
+;     } else {
+;         ; Switch from + to XL
+;         MouseClick("left", coordX, coordY + 60, , 0)
+;     }
 
-    BlockInput("MouseMove")
-    MouseGetPos(&mouseX, &mouseY)
-
-    MouseClick("left", coordX, coordY, , 0)
-    Sleep(100)
-
-    if (color = "0xE6E6E6") {
-        ; Switch from XL to +
-        MouseClick("left", coordX, coordY + 40, , 0)
-    } else {
-        ; Switch from + to XL
-        MouseClick("left", coordX, coordY + 60, , 0)
-    }
-
-    MouseMove(mouseX, mouseY, 0)
-    BlockInput("MouseMoveOff")
-}
+;     MouseMove(mouseX, mouseY, 0)
+;     BlockInput("MouseMoveOff")
+; }
 
 switchVSCodeWindowSize() {
     smallX := 1264
@@ -147,55 +130,55 @@ switchVSCodeWindowSize() {
     }
 }
 
-global chatWindowForegroundState := 0 ; 0 = Twitch, 1 = Chatterino
-switchForegroundChatWindow() {
-    global
-    twitchWindowName := "skate702 – Chat - Twitch"
-    otherWindowName := "Chatterino"
+; global chatWindowForegroundState := 0 ; 0 = Twitch, 1 = Chatterino
+; switchForegroundChatWindow() {
+;     global
+;     twitchWindowName := "skate702 – Chat - Twitch"
+;     otherWindowName := "Chatterino"
 
-    if (chatWindowForegroundState = 0) {
-        if (WinExist(twitchWindowName)) {
-            WinActivate(twitchWindowName)
-        }
-        chatWindowForegroundState := 1
-    } else {
-        if (WinExist(otherWindowName)) {
-            WinActivate(otherWindowName)
-        }
-        chatWindowForegroundState := 0
-    }
-}
+;     if (chatWindowForegroundState = 0) {
+;         if (WinExist(twitchWindowName)) {
+;             WinActivate(twitchWindowName)
+;         }
+;         chatWindowForegroundState := 1
+;     } else {
+;         if (WinExist(otherWindowName)) {
+;             WinActivate(otherWindowName)
+;         }
+;         chatWindowForegroundState := 0
+;     }
+; }
 
-fancyZonesLayout(layout) {
-    CoordMode("Mouse", "Screen")
+; fancyZonesLayout(layout) {
+;     CoordMode("Mouse", "Screen")
     
-    BlockInput("MouseMove")
-    MouseGetPos(&mouseX, &mouseY)
+;     BlockInput("MouseMove")
+;     MouseGetPos(&mouseX, &mouseY)
 
-    if (layout == "Standard") {
-        MouseMove(300, 300, 0)
-        Sleep(50)
-        Send("{Ctrl down}{LWin down}{Alt down}1")
-        Send("{Ctrl up}{LWin up}{Alt up}")
-        Sleep(300)
-        MouseMove(5000, 300, 0)
-        Sleep(50)
-        Send("{Ctrl down}{LWin down}{Alt down}2")
-        Send("{Ctrl up}{LWin up}{Alt up}")
-        Sleep(300)
-    } else if (layout == "Streaming") {
-        MouseMove(300, 300, 0)
-        Sleep(50)
-        Send("{Ctrl down}{LWin down}{Alt down}3")
-        Send("{Ctrl up}{LWin up}{Alt up}")
-        Sleep(300)
-        MouseMove(5000, 300, 0)
-        Sleep(50)
-        Send("{Ctrl down}{LWin down}{Alt down}4")
-        Send("{Ctrl up}{LWin up}{Alt up}")
-        Sleep(300)
-    }
+;     if (layout == "Standard") {
+;         MouseMove(300, 300, 0)
+;         Sleep(50)
+;         Send("{Ctrl down}{LWin down}{Alt down}1")
+;         Send("{Ctrl up}{LWin up}{Alt up}")
+;         Sleep(300)
+;         MouseMove(5000, 300, 0)
+;         Sleep(50)
+;         Send("{Ctrl down}{LWin down}{Alt down}2")
+;         Send("{Ctrl up}{LWin up}{Alt up}")
+;         Sleep(300)
+;     } else if (layout == "Streaming") {
+;         MouseMove(300, 300, 0)
+;         Sleep(50)
+;         Send("{Ctrl down}{LWin down}{Alt down}3")
+;         Send("{Ctrl up}{LWin up}{Alt up}")
+;         Sleep(300)
+;         MouseMove(5000, 300, 0)
+;         Sleep(50)
+;         Send("{Ctrl down}{LWin down}{Alt down}4")
+;         Send("{Ctrl up}{LWin up}{Alt up}")
+;         Sleep(300)
+;     }
 
-    MouseMove(mouseX, mouseY, 0)
-    BlockInput("MouseMoveOff")
-}
+;     MouseMove(mouseX, mouseY, 0)
+;     BlockInput("MouseMoveOff")
+; }

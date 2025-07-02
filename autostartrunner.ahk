@@ -8,4 +8,3 @@ Run(varHotkeylessAHKPath() . "HotkeylessAHK.ahk")
 
 SetWorkingDir(varAutoHotkeyScriptsPath())
 Run(varAutoHotkeyScriptsPath() . "ahk.ahk")
-Run(varAutoHotkeyScriptsPath() . "rightclickmod.ahk")

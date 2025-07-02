@@ -52,7 +52,7 @@ SC00D:: Send("{Raw}" "`` ")
             callVSCode()
         }
     }
-    S:: switchActiveStreamDeckConfig()
+    ; S:: switchActiveStreamDeckConfig()
 
     1:: Send("[1]")
     2:: Send("[2]")
@@ -66,43 +66,3 @@ SC00D:: Send("{Raw}" "`` ")
 }
 #HotIf
 
-; Hijack the very special snowflake called Copilot Key :)
-*<+<#f23:: {
-    Send("{Blind}{LShift Up}{LWin Up}{F23 Up}")
-    Sleep 10
-    Send "^+!{Ö}"
-}
-
-; Mouse button shortcuts
-^!F12::
-{
-    if (isPremiereActive()) {
-        Send("N")
-    } else if (isMinecraftActive()) {
-        Send(9)
-    } else {
-        callExplorer()
-    }
-}
-
-^!F11::
-{
-    if (isPremiereActive()) {
-        Send("B")
-    } else if (isMinecraftActive()) {
-        Send(8)
-    } else {
-        callChrome()
-    }
-}
-
-^!F10::
-{
-    if (isPremiereActive()) {
-        premiereClickOnElementPositionProperty()
-    } else if (isMinecraftActive()) {
-        Send(7)
-    } else {
-        callVSCode()
-    }
-}
