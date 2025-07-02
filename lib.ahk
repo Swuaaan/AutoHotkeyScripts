@@ -50,8 +50,8 @@ openTerminalInCurrentExplorerDirectory() {
             return
         }
     }
-    ; Fallback: Standard-CMD
-    Run("cmd")
+    ; Fallback: CMD auf C:\ starten
+    Run("cmd /k cd /d C:\")
 }
 
 callExplorer() {
