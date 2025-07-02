@@ -54,15 +54,6 @@ openTerminalInCurrentExplorerDirectory() {
     Run("cmd")
 }
 
-openVSCodeInCurrentExplorerDirectory() {
-    if (isExplorerActive()) {
-        windowTitle := getTrimmedExplorerWindowTitle()
-        Run("`"C:\Users\Sebastian\AppData\Local\Programs\Microsoft VS Code\Code.exe`" " windowTitle)
-    } else {
-        Run("`"C:\Users\Sebastian\AppData\Local\Programs\Microsoft VS Code\Code.exe`"")
-    }
-}
-
 callExplorer() {
     if !WinExist("ahk_class CabinetWClass") {
         Run("explorer.exe")
@@ -81,13 +72,77 @@ callExplorer() {
 
 }
 
+getVSCodeExePath() {
+    ; Hole LOCALAPPDATA über EnvGet (v2-Syntax)
+    localAppData := EnvGet("LOCALAPPDATA")
+    programFiles := EnvGet("PROGRAMFILES")
+    programFilesX86 := EnvGet("PROGRAMFILES(X86)")
+    userName := EnvGet("USERNAME")
+    
+    ; Mögliche VS Code-Pfade mit korrekten Variablen
+    possiblePaths := [
+        localAppData . "\Programs\Microsoft VS Code\Code.exe",
+        programFiles . "\Microsoft VS Code\Code.exe",
+        programFilesX86 . "\Microsoft VS Code\Code.exe",
+        "C:\Users\" . userName . "\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+    ]
+    
+    ; Prüfe welcher existiert
+    for path in possiblePaths {
+        if (FileExist(path)) {
+            return path
+        }
+    }
+    
+    return ""  ; Nicht gefunden
+}
+
+; Korrigierte Funktion mit vollständigem VS Code-Pfad
+openVSCodeInCurrentExplorerDirectory() {
+    vscPath := getVSCodeExePath()
+    
+    if (vscPath == "") {
+        MsgBox("VS Code nicht automatisch gefunden!`nVerwende die manuelle Version.")
+        return
+    }
+    
+    try {
+        if (isExplorerActive()) {
+            for window in ComObject("Shell.Application").Windows {
+                if (window.HWND == WinGetID("A")) {
+                    path := window.Document.Folder.Self.Path
+                    if (path != "" && DirExist(path)) {
+                        Run("`"" . vscPath . "`" `"" . path . "`"")
+                        return
+                    }
+                }
+            }
+        }
+        
+        Run("`"" . vscPath . "`"")
+    } catch Error as e {
+        MsgBox("Fehler: " . e.Message)
+    }
+}
+
+; Hauptfunktion: VS Code aktivieren/starten mit Tab-Wechsel
 callVSCode() {
-    if !WinExist("ahk_exe Code.exe")
-        Run("`"C:\Users\Sebastian\AppData\Local\Programs\Microsoft VS Code\Code.exe`"")
-    if WinActive("ahk_exe Code.exe")
-        Send("^{PgDn}")
-    else
-        WinActivate("ahk_exe Code.exe")
+    try {
+        ; Starte VS Code falls nicht läuft
+        if (!WinExist("ahk_exe Code.exe")) {
+            Run("code")
+            return
+        }
+        
+        ; VS Code läuft bereits
+        if (WinActive("ahk_exe Code.exe")) {
+            Send("^{PgDn}")  ; Nächster Tab
+        } else {
+            WinActivate("ahk_exe Code.exe")
+        }
+    } catch {
+        Run("code")
+    }
 }
 
 callVivaldi() {
